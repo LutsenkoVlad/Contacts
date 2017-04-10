@@ -1,0 +1,19 @@
+﻿@model AddressBook.Interfaces.Models.Phone
+
+<div class="modal-dialog">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.PhoneId)
+        <div>
+            @Html.LabelFor(m => m.Number)
+            @Html.EditorFor(m => m.Number)
+        </div>
+        @Html.Hidden("ContactId", ViewData["Id"])
+        <div>
+            @Html.LabelFor(m => m.Type, "PhoneTypeId")
+            @Html.DropDownList("PhoneTypeId", ViewBag.PhoneTypes as SelectList)
+        </div>
+        <p><input type="submit" value="Edit" class="btn btn-primary" /></p>
+    }
+</div>

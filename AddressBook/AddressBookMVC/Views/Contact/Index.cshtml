@@ -1,0 +1,48 @@
+﻿@model AddressBook.BLL.Models.PagingContactsIndexViewModel
+
+@{ 
+    ViewBag.Title = "Index";
+}
+    <div>
+        <div class="container body-content">
+            <h3>Contacts </h3>
+        </div>
+        <div class="jumbotron">
+            <fieldset>
+                @foreach (var item in Model.Contacts)
+            {
+                    <div>
+                        @Html.ActionLink(item.Name, "Detail", new { id = item.Id })
+                        @Html.ActionLink("Add To QuickList", "ChooseQuickList", "QuickList",
+                       new { ContactId = item.Id }, new { @class = "viewDialog btn btn-default" })
+                    </div>
+                    <br />
+                }
+            </fieldset>
+            <div>
+                @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index",new { page = x}))
+            </div>
+        </div>
+        <script src='@Url.Content("~/Scripts/jquery-3.1.1.min.js")' type="text/javascript"></script>
+        <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+        <script>
+       $(document).ready(function () {
+
+          $.ajaxSetup({ cache: false });
+
+          $(".viewDialog").on("click", function (e) {
+             e.preventDefault();
+
+             $("<div></div>")
+                  .addClass("dialog")
+                   .appendTo("body")
+                      .dialog({
+                       title: $(this).attr("data_dialog_title"),
+                         close: function () { $(this).remove() },
+                      modal: true
+                   })
+                  .load(this.href);
+               });
+       });
+            </script>
+     </div>

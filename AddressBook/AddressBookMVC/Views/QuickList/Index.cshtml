@@ -1,0 +1,22 @@
+﻿@model IList<AddressBook.Interfaces.Models.QuickList>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+    <fieldset>
+        @foreach (var item in Model)
+        {
+            <div class="form-group">
+                <h4>@item.Name</h4>
+                    @foreach(var contacts in item.Contacts)
+                    {
+                        <div>
+                            @contacts.FirstName @contacts.LastName @contacts.Login
+                        </div>
+                    }
+            </div>
+        }
+    </fieldset>
+</div>

@@ -1,0 +1,18 @@
+﻿
+<h3>ChooseQuickList</h3>
+<div>
+    @using (Html.BeginForm())
+    {
+
+        @Html.AntiForgeryToken()
+        @Html.Hidden("ContactId",ViewData["Id"])
+        <div>
+            @Html.DropDownList("QuickListId",ViewBag.QuickLists as SelectList)
+        </div>
+
+        <div>
+            <input type="submit" value="Add" class="btn btn-primary" />
+        </div>
+    }
+</div>
+

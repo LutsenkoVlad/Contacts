@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Address Book", "Index", "Contact", new { area = "" }, new { @class = "navbar-brand" })
+             </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Contacts", "Index", "Contact")</li>
+                    <li>@Html.ActionLink("Edit profile", "Edit", "Contact",null,htmlAttributes:null )</li>
+                    <li>@Html.ActionLink("Quick Lists", "Index", "QuickList")</li>
+                </ul>
+
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><span style="color:white">Hello, @User.Identity.Name</span></li>
+                        <li>@Html.ActionLink("Sign Out", "SignOut", "Contact")</li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("Register", "SignUp", "Contact", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+                        <li>@Html.ActionLink("Log In", "LogIn", "Contact", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                    </ul>
+                }
+                </div> 
+            </div>
+        </div>
+
+    <div class="container body-content ">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>Vlad Lutsenko - Beginner .NET developer</p>
+        </footer>
+    </div>
+    @Scripts.Render("~/bundles/jquery@*")
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+</body>
+</html>

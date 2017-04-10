@@ -1,0 +1,167 @@
+﻿@model AddressBook.BLL.Models.ContactViewModel
+    
+@{
+    ViewBag.Title = "Edit";
+}
+<h2>Edit information</h2>
+<div>
+    @using (Html.BeginForm("Edit","Contact",new { id = Model.ContactId},FormMethod.Post, new { enctype = "multipart/form-data"}))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.ContactId)
+        @Html.HiddenFor(m => m.Password)
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.FirstName,"", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Login, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Login, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Login, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Country, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Country, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Country, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-9">
+                    @Html.EditorFor(m => m.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.BirthDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                 @if (Model.ImageData != null)
+                {
+                    <div>
+                       <img class="img-thumbnail" width="400" height="400" src="@Url.Action("GetImage","Contact",
+                                                                                new { id = Model.ContactId})" />
+                     </div>
+                     {
+                         var base64 = Convert.ToBase64String(Model.ImageData);
+                         var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            <img class="img-thumbnail" width="200" height="200" src="@imgSrc" />
+                            @Html.HiddenFor(m => m.ImageData)
+                         @Html.HiddenFor(m => m.ImageMimeType)
+                      }
+                 }
+                      <br />
+                      <div class="form-group">
+                            <label class="control-label">Update photo</label>
+                           <input type="file" name="file" id="file" value="browse" />
+                       </div>
+
+                    @if (Model.Phones != null)
+                    {
+                        for (int i = 0; i < Model.Phones.Count; i++)
+                        {
+                                <div id="myDiv">
+                                    @Html.ActionLink(Model.Phones[i].Number, "EditPhone", "Contact",
+                          new { phoneId = (int)(Model.Phones[i].PhoneId), contactId = (int)Model.Phones[i].ContactId },
+                                 new { @class = "viewDialog btn btn-default", data_dialog_title = "Edit phone" })
+                                    @Html.DisplayFor(m => Model.Phones[i].Type.Name)
+                                    @Html.HiddenFor(m => Model.Phones[i].Number)
+                                    @Html.HiddenFor(m => Model.Phones[i].Type.PhoneTypeId)
+                                    @Html.HiddenFor(m => Model.Phones[i].PhoneTypeId)
+                                    @Html.HiddenFor(m => Model.Phones[i].Type.Name)
+                                    @Html.HiddenFor(m => Model.Phones[i].PhoneId)
+                                    @Html.HiddenFor(m => Model.Phones[i].ContactId)
+                                    @*@Html.ActionLink("Delete phone","DeletePhone","Contact",new { id = Model.Phones[i].PhoneId},
+                                        new { @class = "btn btn-default" })*@
+                                    @Ajax.ActionLink("Delete phone", "DeletePhone", "Contact",
+                                        new { id = Model.Phones[i].PhoneId }, new AjaxOptions { UpdateTargetId = "myDiv" })
+                                </div>
+                            <br />
+                        }
+                    }
+
+
+
+                </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-9">
+                            <input type="submit" value="Edit" class="btn btn-primary" />
+                         </div>
+                     </div>
+                  </div>
+                  }
+
+      <script src='@Url.Content("~/Scripts/jquery-3.1.1.min.js")' type="text/javascript"></script>
+       <script src='@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")' type="text/javascript"></script>
+       <script>
+       $(document).ready(function () {
+
+          $.ajaxSetup({ cache: false });
+
+          $(".viewDialog").on("click", function (e) {
+             e.preventDefault();
+
+             $("<div></div>")
+                 .addClass("dialog")
+                 .appendTo($("body")) 
+                      .dialog({
+                       title: $(this).attr("data_dialog_title"),
+                         close: function () { $(this).remove() },
+                      modal: true
+                   })
+                  .load(this.href);
+               });      
+           });
+          </script>
+          <br/>
+         <div class="form-group">
+            <div class="col-md-9">
+                @Html.ActionLink("Add new phone", "AddPhone", "Contact", new { id = Model.ContactId }, new { @class = "viewDialog btn btn-default", data_dialog_title = "Создание модели" })
+                @Html.ActionLink("Go to contacts", "Index", null, new { @class = "btn btn-default" })
+            </div>
+      </div>
+
+ </div>

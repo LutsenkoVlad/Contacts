@@ -1,0 +1,26 @@
+﻿@model AddressBook.Interfaces.Models.Phone
+
+@{
+    AjaxOptions ajaxOpts = new AjaxOptions
+    {
+        UpdateTargetId = "ajax",
+        Url = Url.Action("AddPhone"),
+    };
+}
+
+<div class="modal-dialog" id="ajax">
+    @using (Ajax.BeginForm(ajaxOpts))
+    {
+        @Html.AntiForgeryToken()
+        <div>
+            @Html.LabelFor(m => m.Number)
+            @Html.EditorFor(m => m.Number)
+        </div>
+        @Html.Hidden("ContactId", ViewData["Id"])
+        <div>
+            @Html.LabelFor(m => m.Type, "PhoneTypeId")
+            @Html.DropDownList("PhoneTypeId", ViewBag.PhoneTypes as SelectList)
+        </div>
+        <p><input type="submit" value="Add" class="btn btn-primary" /></p>
+    }
+</div>

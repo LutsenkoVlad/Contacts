@@ -1,0 +1,14 @@
+﻿@model IEnumerable<AddressBook.BLL.Models.PhoneViewModel>
+
+@foreach (var phone in Model)
+{
+    <div>
+        @Html.HiddenFor(p => phone.PhoneId)
+        @Html.HiddenFor(p => phone.ContactId)
+        @Html.LabelFor(p => phone.Number)
+        @Html.EditorFor(p => phone.Number)
+
+        @Html.LabelFor(p => phone.Type.Name)
+        @Html.EditorFor(p => phone.Type.Name)
+    </div>
+}
